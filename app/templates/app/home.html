@@ -14,7 +14,7 @@
     <h1>Book Published</h1>
     <nav>
       <ul>
-        <li><a href="#">Home</a></li>
+        <li><a href="{% url 'home' %}">Home</a></li>
         <li><a href="{% url 'addCat' %}">AddCategory</a></li>
         <li><a href="{% url 'addBook' %}">AddBooks</a></li>
         <li><a href="#">Add</a></li>
@@ -30,6 +30,18 @@
     <p>We offer a variety of services, including editing, formatting, and marketing.</p>
   </section>
   {% block content %}
+  <div class="container">
+      <div class="book-list">
+            {% for book in books %}
+            <div class="book-card">
+                <h3>{{ book.title }}</h3>
+                <p>Author: {{ book.authors }}</p>
+                <p>Published Date: {{ book.published_date }}</p>
+                <p>Category: {{ book.category.category }}</p>
+            </div>
+            {% endfor %}
+        </div>
+  </div>
     
   {% endblock content %}
 

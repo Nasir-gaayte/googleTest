@@ -4,8 +4,8 @@ from .models import BooksModel,CategoriesModel
 from .forms import BookForm, CategoryForm
 
 def home(request):
-      book = BooksModel.objects.all()
-      return render(request,'app/home.html',{'home':home})
+      books = BooksModel.objects.all()
+      return render(request,'app/home.html',{'books':books})
 
 
 def addCategory(request):
