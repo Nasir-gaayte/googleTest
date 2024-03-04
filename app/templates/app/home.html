@@ -38,6 +38,10 @@
                 <p>Author: {{ book.authors }}</p>
                 <p>Published Date: {{ book.published_date }}</p>
                 <p>Category: {{ book.category.category }}</p>
+                <div>
+                  <button class="btn btn-info" type="submit"><a href="{% url 'updateBook' book.id %}">Update</a></button>
+                  <button class="btn btn-danger" type="submit"><a href="{% url 'deleteBook' book.id %}">Delete</a></button>
+                </div>
             </div>
             {% endfor %}
         </div>
