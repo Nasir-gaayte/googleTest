@@ -15,5 +15,14 @@ def addCategory(request):
                   form.save()
                   return redirect('home')
       form=CategoryForm()
-      return render
+      return render(request,'app/addCategory.html',{'form':form})
+            
+def addBook(request):
+      if request.method == "POST":
+            form = BookForm(request.POST)
+            if form.is_valid():
+                  form.save()
+                  return redirect('home')
+      form=BookForm()
+      return render(request,'app/addBook.html',{'form':form})
             
