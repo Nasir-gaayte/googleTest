@@ -2,6 +2,61 @@ from django.shortcuts import render,redirect
 from .models import BooksModel,CategoriesModel
 
 from .forms import BookForm, CategoryForm
+from .resource import BookResource
+from tablib import Dataset
+import pandas as pd
+import os
+from django.core.files.storage import FileSystemStorage
+
+
+
+def Import_Excel_pandas(request):
+     
+    if request.method == 'POST' and request.FILES['myfile']:      
+        myfile = request. FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)              
+        empexceldata = pd.read_excel(filename)        
+        dbframe = empexceldata
+        for dbframe in dbframe.itertuples():
+            obj = BooksModel.objects.create(
+                  title = dbframe.title,
+                  subtitle = dbframe.subtitle,
+                  authors = dbframe.authors,
+                  publisher = dbframe.publisher,
+                  category= CategoriesModel.objects.filter(category=dbframe.category),
+                  distribution_expense = dbframe.distribution_expense,   
+             )           
+            obj.save()
+        return render(request, 'app/Import_excel_db.html', {
+            'uploaded_file_url': uploaded_file_url
+        })   
+    return render(request, 'app/Import_excel_db.html',{})
+ 
+ 
+def Import_Excel(request):
+    
+    if request.method == 'POST' and request.FILES['myfile']:      
+        myfile = request. FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)    
+        return render(request, 'app/Import_excel.html', {
+            'uploaded_file_url': uploaded_file_url
+        })   
+    return render(request, 'app/Import_excel.html',{}) 
+
+def Import_excel(request):
+    if request.method == 'POST' :
+        Employee =BookResource()
+        dataset = Dataset()
+        new_employee = request.FILES['myfile']
+        data_import = dataset.load(new_employee.read())
+        result = BookResource.import_data(dataset,dry_run=True)
+        if not result.has_errors():
+            BookResource.import_data(dataset,dry_run=False)        
+    return render(request, 'app/Import_excel.html',{})
 
 def home(request):
       books = BooksModel.objects.all()
