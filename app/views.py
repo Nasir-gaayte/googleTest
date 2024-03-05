@@ -29,10 +29,10 @@ def Import_Excel_pandas(request):
                   distribution_expense = dbframe.distribution_expense,   
              )           
             obj.save()
-        return render(request, 'app/Import_excel_db.html', {
+        return render(request, 'app/Import_excel.html', {
             'uploaded_file_url': uploaded_file_url
         })   
-    return render(request, 'app/Import_excel_db.html',{})
+    return render(request, 'app/Import_excel.html',{})
  
  
 def Import_Excel(request):
